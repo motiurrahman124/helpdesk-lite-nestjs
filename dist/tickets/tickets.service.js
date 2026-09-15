@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 let TicketsService = class TicketsService {
     tickets = [
         {
@@ -32,8 +32,35 @@ let TicketsService = class TicketsService {
             status: 'in_progress',
         },
     ];
-    findAll() {
-        return this.tickets;
+    nextTicketId = 4;
+    findAll(status, priority) {
+        let tickets = this.tickets;
+        if (status) {
+            tickets = tickets.filter(ticket => ticket.status === status);
+        }
+        if (priority) {
+            tickets = tickets.filter(ticket => ticket.priority === priority);
+        }
+        return tickets;
+    }
+    findOne(id) {
+        const ticket = this.tickets.find(ticket => ticket.id === id);
+        if (!ticket) {
+            throw new NotFoundException(`Ticket with id ${id} not found`);
+        }
+        return ticket;
+    }
+    create(payload) {
+        const ticket = {
+            id: this.nextTicketId++,
+            subject: payload.subject,
+            description: payload.description,
+            status: 'open',
+            priority: payload.priority,
+            createdAt: new Date().toISOString(),
+        };
+        this.tickets.push(ticket);
+        return ticket;
     }
 };
 TicketsService = __decorate([
