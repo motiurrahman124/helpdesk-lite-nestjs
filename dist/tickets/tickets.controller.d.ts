@@ -1,9 +1,11 @@
 import { TicketsService } from './tickets.service.js';
 import { Tickets } from './tickets.interface.js';
+import { CreateTicketDto } from './dto/create-ticket.dto.js';
+import { FilterTicketsQueryDto } from './dto/filter-tickets-query.dto.js';
 export declare class TicketsController {
     private readonly ticketsService;
     constructor(ticketsService: TicketsService);
-    findAll(status?: Tickets['status'], priority?: Tickets['priority']): Tickets[];
+    findAll(filterTicketsQueryDto: FilterTicketsQueryDto): Tickets[];
     findOne(id: number): Tickets;
-    create(payload: any): Tickets;
+    create(createTicketDto: CreateTicketDto): Tickets;
 }

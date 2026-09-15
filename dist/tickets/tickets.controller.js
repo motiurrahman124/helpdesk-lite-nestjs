@@ -12,27 +12,28 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { Controller, Get, Param, ParseIntPipe, Query, Post, Body } from '@nestjs/common';
 import { TicketsService } from './tickets.service.js';
+import { CreateTicketDto } from './dto/create-ticket.dto.js';
+import { FilterTicketsQueryDto } from './dto/filter-tickets-query.dto.js';
 let TicketsController = class TicketsController {
     ticketsService;
     constructor(ticketsService) {
         this.ticketsService = ticketsService;
     }
-    findAll(status, priority) {
-        return this.ticketsService.findAll(status, priority);
+    findAll(filterTicketsQueryDto) {
+        return this.ticketsService.findAll(filterTicketsQueryDto.status, filterTicketsQueryDto.priority);
     }
     findOne(id) {
         return this.ticketsService.findOne(id);
     }
-    create(payload) {
-        return this.ticketsService.create(payload);
+    create(createTicketDto) {
+        return this.ticketsService.create(createTicketDto);
     }
 };
 __decorate([
     Get(),
-    __param(0, Query('status')),
-    __param(1, Query('priority')),
+    __param(0, Query()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [FilterTicketsQueryDto]),
     __metadata("design:returntype", void 0)
 ], TicketsController.prototype, "findAll", null);
 __decorate([
@@ -46,7 +47,7 @@ __decorate([
     Post(),
     __param(0, Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [CreateTicketDto]),
     __metadata("design:returntype", void 0)
 ], TicketsController.prototype, "create", null);
 TicketsController = __decorate([

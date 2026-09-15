@@ -50,13 +50,13 @@ let TicketsService = class TicketsService {
         }
         return ticket;
     }
-    create(payload) {
+    create(createTicketDto) {
         const ticket = {
             id: this.nextTicketId++,
-            subject: payload.subject,
-            description: payload.description,
+            subject: createTicketDto.subject,
+            description: createTicketDto.description,
             status: 'open',
-            priority: payload.priority,
+            priority: createTicketDto.priority,
             createdAt: new Date().toISOString(),
         };
         this.tickets.push(ticket);
