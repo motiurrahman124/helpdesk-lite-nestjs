@@ -9,8 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { IsOptional, IsIn } from "class-validator";
 export class FilterTicketsQueryDto {
-    status;
-    priority;
 }
 __decorate([
     IsOptional(),

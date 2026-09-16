@@ -6,33 +6,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Injectable, NotFoundException } from '@nestjs/common';
 let TicketsService = class TicketsService {
-    tickets = [
-        {
-            id: 1,
-            subject: 'Ticket 1',
-            description: 'Description 1',
-            priority: 'low',
-            createdAt: new Date().toISOString(),
-            status: 'open',
-        },
-        {
-            id: 2,
-            subject: 'Ticket 2',
-            description: 'Description 2',
-            priority: 'medium',
-            createdAt: new Date().toISOString(),
-            status: 'closed',
-        },
-        {
-            id: 3,
-            subject: 'Ticket 3',
-            description: 'Description 3',
-            priority: 'high',
-            createdAt: new Date().toISOString(),
-            status: 'in_progress',
-        },
-    ];
-    nextTicketId = 4;
+    constructor() {
+        this.tickets = [
+            {
+                id: 1,
+                subject: 'Ticket 1',
+                description: 'Description 1',
+                priority: 'low',
+                createdAt: new Date().toISOString(),
+                status: 'open',
+            },
+            {
+                id: 2,
+                subject: 'Ticket 2',
+                description: 'Description 2',
+                priority: 'medium',
+                createdAt: new Date().toISOString(),
+                status: 'closed',
+            },
+            {
+                id: 3,
+                subject: 'Ticket 3',
+                description: 'Description 3',
+                priority: 'high',
+                createdAt: new Date().toISOString(),
+                status: 'in_progress',
+            },
+        ];
+        this.nextTicketId = 4;
+    }
     findAll(status, priority) {
         let tickets = this.tickets;
         if (status) {
@@ -60,6 +62,14 @@ let TicketsService = class TicketsService {
             createdAt: new Date().toISOString(),
         };
         this.tickets.push(ticket);
+        return ticket;
+    }
+    update(id, updateTicketDto) {
+        const ticket = this.findOne(id);
+        if (!ticket) {
+            throw new NotFoundException(`Ticket with id ${id} not found`);
+        }
+        Object.assign(ticket, updateTicketDto);
         return ticket;
     }
 };

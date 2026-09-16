@@ -9,9 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { IsString, IsNotEmpty, IsIn } from "class-validator";
 export class CreateTicketDto {
-    subject;
-    description;
-    priority;
 }
 __decorate([
     IsString(),
