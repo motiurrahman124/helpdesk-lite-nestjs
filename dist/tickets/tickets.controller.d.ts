@@ -10,4 +10,5 @@ export declare class TicketsController {
     findOne(id: number): Tickets;
     create(createTicketDto: CreateTicketDto): Tickets;
     update(id: number, updateTicketDto: UpdateTicketDto): Tickets;
+    closeTicket(id: number): Tickets;
 }

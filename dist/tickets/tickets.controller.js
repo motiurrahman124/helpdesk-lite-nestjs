@@ -31,6 +31,9 @@ let TicketsController = class TicketsController {
     update(id, updateTicketDto) {
         return this.ticketsService.update(id, updateTicketDto);
     }
+    closeTicket(id) {
+        return this.ticketsService.closeTicket(id);
+    }
 };
 __decorate([
     Get(),
@@ -61,6 +64,13 @@ __decorate([
     __metadata("design:paramtypes", [Number, UpdateTicketDto]),
     __metadata("design:returntype", void 0)
 ], TicketsController.prototype, "update", null);
+__decorate([
+    Patch(':id/close'),
+    __param(0, Param('id', ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], TicketsController.prototype, "closeTicket", null);
 TicketsController = __decorate([
     Controller('tickets'),
     __metadata("design:paramtypes", [TicketsService])

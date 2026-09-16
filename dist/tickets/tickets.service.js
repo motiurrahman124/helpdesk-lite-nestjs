@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 let TicketsService = class TicketsService {
     constructor() {
         this.tickets = [
@@ -69,7 +69,21 @@ let TicketsService = class TicketsService {
         if (!ticket) {
             throw new NotFoundException(`Ticket with id ${id} not found`);
         }
+        if (ticket.status === 'closed') {
+            throw new BadRequestException('Cannot update a closed ticket');
+        }
         Object.assign(ticket, updateTicketDto);
+        return ticket;
+    }
+    closeTicket(id) {
+        const ticket = this.findOne(id);
+        if (!ticket) {
+            throw new NotFoundException(`Ticket with id ${id} not found`);
+        }
+        if (ticket.status === 'closed') {
+            throw new BadRequestException('Ticket is already closed');
+        }
+        ticket.status = 'closed';
         return ticket;
     }
 };
