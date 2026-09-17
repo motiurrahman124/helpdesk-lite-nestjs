@@ -7,7 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Module } from '@nestjs/common';
 import { TicketsController } from './tickets.controller.js';
 import { TicketsService } from './tickets.service.js';
+import { RequestLoggerMiddleware } from '../common/request-logger.middleware.js';
 let TicketsModule = class TicketsModule {
+    configure(consumer) {
+        consumer.apply(RequestLoggerMiddleware).forRoutes(TicketsController);
+    }
 };
 TicketsModule = __decorate([
     Module({
