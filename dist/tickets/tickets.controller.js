@@ -10,11 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Get, Param, ParseIntPipe, Query, Post, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query, Post, Body, Patch, UseGuards } from '@nestjs/common';
 import { TicketsService } from './tickets.service.js';
 import { CreateTicketDto } from './dto/create-ticket.dto.js';
 import { FilterTicketsQueryDto } from './dto/filter-tickets-query.dto.js';
 import { UpdateTicketDto } from './dto/update-ticket.dto.js';
+import { StaffGuard } from './guard/staff.guard.js';
 let TicketsController = class TicketsController {
     constructor(ticketsService) {
         this.ticketsService = ticketsService;
@@ -65,6 +66,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TicketsController.prototype, "update", null);
 __decorate([
+    UseGuards(StaffGuard),
     Patch(':id/close'),
     __param(0, Param('id', ParseIntPipe)),
     __metadata("design:type", Function),
