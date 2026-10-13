@@ -4,13 +4,21 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(HttpExceptionFilter.name);
+
   catch(exception: unknown, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse<Response>();
+    if (!(exception instanceof HttpException)) {
+      this.logger.error(
+        exception instanceof Error ? exception.stack : exception,
+      );
+    }
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
@@ -42,7 +50,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       };
     }
 
-    const body = exceptionResponse as { message?: string | string[]; error?: string };
+    const body = exceptionResponse as {
+      message?: string | string[];
+      error?: string;
+    };
     return {
       message: body.error ?? exception.name.replace(/Exception$/, ''),
       errorMessage: body.message ?? exception.message,

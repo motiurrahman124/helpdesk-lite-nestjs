@@ -1,0 +1,87 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  BLOCKED
+}
+
+enum OtpType {
+  REGISTRATION
+  PASSWORD_RESET
+}
+
+model User {
+  id              String     @id @default(uuid())
+  name            String     @db.VarChar(255)
+  email           String     @unique
+  phone           String?    @unique @db.VarChar(20)
+  passwordHash    String
+  profileImage    String?    @db.Text
+  status          UserStatus @default(PENDING)
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  sessions            Session[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([status, deletedAt])
+  @@map("users")
+}
+
+model Session {
+  id        String    @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model Otp {
+  id             String    @id @default(uuid())
+  otp            String    @db.VarChar(10)
+  otpType        OtpType
+  destination    String    @db.VarChar(255)
+  expirationTime DateTime
+  attempts       Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([destination, otpType])
+  @@map("otps")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique @db.VarChar(64)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+}

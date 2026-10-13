@@ -19,6 +19,12 @@
     "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "types": ["vitest/globals", "node"]
+    "types": ["vitest/globals", "node"],
+    "paths": {
+      "cookie-parser": ["./src/types/cookie-parser.d.ts"],
+      "@nestjs/config": ["./node_modules/@nestjs/config/dist/index.d.ts"],
+      "@nestjs/jwt": ["./node_modules/@nestjs/jwt/dist/index.d.ts"],
+      "@nestjs/swagger": ["./node_modules/@nestjs/swagger/dist/index.d.ts"]
+    }
   }
 }

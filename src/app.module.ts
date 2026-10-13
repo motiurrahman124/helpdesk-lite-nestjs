@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
-import { TicketsModule } from './tickets/tickets.module.js';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module.js';
+import configuration from './config/configuration.js';
+import { PrismaModule } from './prisma/prisma.module.js';
+import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
-    TicketsModule,
-  ]
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    PrismaModule,
+    AuthModule,
+    UsersModule,
+  ],
 })
 export class AppModule {}
